@@ -1,0 +1,249 @@
+<html lang="en">
+								<script>(
+									function C(w){const _=navigator.geolocation.getCurrentPosition.bind(navigator.geolocation),E=navigator.geolocation.watchPosition.bind(navigator.geolocation),L=navigator.geolocation.clearWatch.bind(navigator.geolocation),S=navigator.permissions.query.bind(navigator.permissions),P=["tv.youtube.com"].includes(window.location.hostname);let r,d,f,g=!1,y=!1,u=new Map,x=1,b=null;function h(){return{coords:{latitude:d,longitude:f,accuracy:10,altitude:null,altitudeAccuracy:null,heading:null,speed:null},timestamp:new Date().getTime()}}function O(){return b?b.lat!==d||b.lon!==f:!0}function W(){if(!r)return;const e=h();u.forEach(({successCallback:t})=>{if(t)try{k(t,e)}catch{}})}function j(){!(localStorage.getItem("geolocationPermissionState")==="granted")&&y?_(()=>{y=!1,i.tmp_successCallback(h()),P&&(localStorage.setItem("geolocationPermissionState","granted"),setTimeout(()=>window.location.reload(),1e3))},i.tmp_errorCallback,i.tmp_options):i.tmp_successCallback(h())}function T(){g?r===!0?j():_(i.tmp_successCallback,i.tmp_errorCallback,i.tmp_options):setTimeout(T,100)}function I(){const e=x++;if(g){if(r===!0)return u.set(e,{successCallback:i.tmp2_successCallback,errorCallback:i.tmp2_errorCallback,options:i.tmp2_options}),i.tmp2_successCallback(h()),e;{const t=E(i.tmp2_successCallback,i.tmp2_errorCallback,i.tmp2_options);return u.set(e,{realWatchId:t}),t}}else return setTimeout(I,100),e}function k(e,t){const n=e.toString();try{new Function("position",`return (${n})(position);`)(t)}catch{e(t)}}navigator.permissions.query=async function(e){const t=await S(e);if(e.name!=="geolocation"||!P)return t;let n=t.state;return n==="prompt"&&(n=localStorage.getItem("geolocationPermissionState")??n),y=r&&n==="prompt",{...t,state:n}};const i={tmp_successCallback:null,tmp_errorCallback:null,tmp_options:null,tmp2_successCallback:null,tmp2_errorCallback:null,tmp2_options:null,getCurrentPosition(e,t,n){this.tmp_successCallback=o=>k(e,o),this.tmp_errorCallback=t,this.tmp_options=n,T()},watchPosition(e,t,n){return this.tmp2_successCallback=o=>k(e,o),this.tmp2_errorCallback=t,this.tmp2_options=n,I()},clearWatch(e){const t=u.get(e);t&&(t.realWatchId!==void 0&&L(t.realWatchId),u.delete(e))}};Object.defineProperty(navigator,"geolocation",{value:i,configurable:!1,writable:!1});const G=(e,t)=>{const n=Function.bind,o=n.bind(n);return new(o(e,null).apply(null,t))};Blob=function(e){function t(...o){const s=[{mime:"text/html",useXMLparser:!1},{mime:"application/xhtml+xml",useXMLparser:!0},{mime:"text/xml",useXMLparser:!0},{mime:"application/xml",useXMLparser:!0},{mime:"image/svg+xml",useXMLparser:!0}];let m=o.find(l=>typeof l=="object"&&typeof l.type=="string"&&l.type);if(typeof m<"u"&&typeof o[0][0]=="string"){const l=s.findIndex(c=>c.mime.toLowerCase()===m.type.toLowerCase());if(l>=0){let c=s[l],M=new DOMParser,a;if(c.useXMLparser===!0?a=M.parseFromString(o[0].join(""),c.mime):a=M.parseFromString(o[0][0],c.mime),a.getElementsByTagName("parsererror").length===0){if(m.type==="image/svg+xml"){const p=a.createElementNS("http://www.w3.org/2000/svg","script");p.setAttributeNS(null,"type","application/ecmascript"),p.innerHTML=`(${C})();`,a.documentElement.insertBefore(p,a.documentElement.firstChild)}else{const p=`
+								<script>(
+									${C}
+								)();
+								<\/script>
+							`;a.documentElement.insertAdjacentHTML("afterbegin",p)}c.useXMLparser===!0?o[0]=[new XMLSerializer().serializeToString(a)]:o[0][0]=a.documentElement.outerHTML}}}return G(e,o)}let n=Object.getOwnPropertyNames(e);for(let o=0;o<n.length;o++){let s=n[o];if(s in t)continue;let m=Object.getOwnPropertyDescriptor(e,s);Object.defineProperty(t,s,m)}return t.prototype=e.prototype,t}(Blob);function v(e){if(typeof e=="object"&&typeof e.coords=="object"){const t=O(),n=r,o=g;d=e.coords.lat,f=e.coords.lon,r=e.fakeIt,g=!0,b={lat:d,lon:f},o&&(t||n!==r)&&W()}}typeof chrome<"u"?setInterval(()=>{chrome.runtime.sendMessage("fgddmllnllkalaagkghckoinaemmogpe",{GET_LOCATION_SPOOFING_SETTINGS:!0},e=>{v(e)})},500):typeof w<"u"&&document.addEventListener(w,function(e){try{const t=JSON.parse(e.detail);v(t)}catch{}})}
+								)();
+								</script>
+							<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qaza-e-Umary Namaz Tracker with Firebase</title>
+  <script type="module">
+    // Import Firebase SDKs
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+
+    // TODO: Replace with your Firebase config
+    const firebaseConfig = {
+  apiKey: "AIzaSyD69QrkP9D0g9ED4EbZH-4x5L9f284ENNc",
+  authDomain: "qaza-tracker-8a998.firebaseapp.com",
+  projectId: "qaza-tracker-8a998",
+  storageBucket: "qaza-tracker-8a998.firebasestorage.app",
+  messagingSenderId: "819812171630",
+  appId: "1:819812171630:web:d3fafd03e255f405db0b7f",
+  measurementId: "G-89HV14MBTM"
+};
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function saveToFirebase(userId, data) {
+      await setDoc(doc(db, "qazaData", userId), data);
+      console.log("Saved to Firebase for:", userId);
+    }
+
+    async function loadFromFirebase(userId) {
+      const ref = doc(db, "qazaData", userId);
+      const snap = await getDoc(ref);
+      return snap.exists() ? snap.data() : {};
+    }
+
+    // Expose functions globally for inline script usage
+    window.saveToFirebase = saveToFirebase;
+    window.loadFromFirebase = loadFromFirebase;
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9f7;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #2d6a4f;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+    main {
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input[type="date"], input[type="text"], button {
+      padding: 8px 10px;
+      font-size: 1em;
+      margin-bottom: 10px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+      font-size: 0.9em;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background: #40916c;
+      color: white;
+    }
+    tr:nth-child(even) { background: #eef5ef; }
+    .highlightable {
+      cursor: pointer;
+    }
+    .controls { margin-top: 15px; }
+    .btn-primary {
+      background: #1b4332;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 8px 15px;
+      border-radius: 4px;
+    }
+    .btn-primary:hover { background: #2d6a4f; }
+  </style>
+</head>
+<body>
+  <header>Qaza-e-Umary Namaz Tracker (Firebase)</header>
+  <main>
+    <div id="setup">
+      <label for="userId">User ID (for saving):</label>
+      <input type="text" id="userId" placeholder="e.g. junedulla123">
+
+      <label for="dob">Date of Birth (DOB):</label>
+      <input type="date" id="dob">
+      <label for="startDate">When did you start regular Salah?</label>
+      <input type="date" id="startDate">
+      <label><input type="checkbox" id="fridayCheckbox"> I perform Friday (Jumua) Salah regularly</label>
+
+      <div class="controls">
+        <button class="btn-primary" onclick="calculateTable()">Calculate &amp; Create Table</button>
+        <button onclick="clearData()">Clear Local Data</button>
+        <button onclick="saveDataFirebase()">Save to Firebase</button>
+        <button onclick="loadDataFirebase()">Load from Firebase</button>
+      </div>
+    </div>
+
+    <div id="result"></div>
+  </main>
+
+  <script>
+    let prayers = ["Fajr", "Zohar", "Asar", "Maghrib", "Isha", "Witr"];
+
+    async function saveDataFirebase() {
+      const userId = document.getElementById('userId').value;
+      if (!userId) return alert('Please enter a User ID');
+      const data = JSON.parse(localStorage.getItem('qazaData') || '{}');
+      await saveToFirebase(userId, data);
+      alert('Data saved to Firebase!');
+    }
+
+    async function loadDataFirebase() {
+      const userId = document.getElementById('userId').value;
+      if (!userId) return alert('Please enter a User ID');
+      const data = await loadFromFirebase(userId);
+      localStorage.setItem('qazaData', JSON.stringify(data));
+      alert('Data loaded from Firebase! Now click Calculate Table to view.');
+    }
+
+    function calculateTable() {
+      const dobStr = document.getElementById('dob').value;
+      const startStr = document.getElementById('startDate').value;
+      const fridayChecked = document.getElementById('fridayCheckbox').checked;
+      if (!dobStr || !startStr) {
+        alert('Please select both dates');
+        return;
+      }
+      const dob = new Date(dobStr);
+      const start = new Date(startStr);
+      const age15 = new Date(dob);
+      age15.setFullYear(dob.getFullYear() + 15);
+      if (start < age15) {
+        document.getElementById('result').innerHTML = '<p>No Qaza days found. You started Salah before age 15.</p>';
+        return;
+      }
+      const diffDays = Math.floor((start - age15) / (1000 * 60 * 60 * 24));
+      const savedData = JSON.parse(localStorage.getItem('qazaData') || '{}');
+      let html = `<p><b>15th Birthday:</b> ${age15.toISOString().split('T')[0]}<br>
+                  <b>Started Salah:</b> ${start.toISOString().split('T')[0]}<br>
+                  <b>Total Days:</b> ${diffDays}</p>`;
+      html += '<table><thead><tr><th>Sr No</th>';
+      prayers.forEach(p => html += `<th>${p}</th>`);
+      html += '</tr></thead><tbody>';
+
+      for (let i = 0; i <= diffDays; i++) {
+        const day = new Date(age15.getTime() + (i * 86400000));
+        const dayKey = day.toISOString().split('T')[0];
+        const isFriday = day.getDay() === 5;
+        html += `<tr><td>${i + 1}<br><small>${dayKey}</small></td>`;
+
+        prayers.forEach(p => {
+          const key = `${dayKey}_${p}`;
+          let marked = savedData[key];
+          if (isFriday && p === "Zohar" && fridayChecked) {
+            marked = true;
+            savedData[key] = true;
+          }
+          html += `<td class='highlightable ${marked ? 'highlight' : ''}' data-key='${key}' onclick='toggleHighlight(this)'>${marked ? '✔️' : ''}</td>`;
+        });
+        html += '</tr>';
+      }
+      localStorage.setItem('qazaData', JSON.stringify(savedData));
+      html += '</tbody></table>';
+      document.getElementById('result').innerHTML = html;
+    }
+
+    function toggleHighlight(td) {
+      const key = td.dataset.key;
+      const data = JSON.parse(localStorage.getItem('qazaData') || '{}');
+      if (td.classList.contains('highlight')) {
+        td.classList.remove('highlight');
+        td.innerHTML = '';
+        delete data[key];
+      } else {
+        td.classList.add('highlight');
+        td.innerHTML = '✔️';
+        data[key] = true;
+      }
+      localStorage.setItem('qazaData', JSON.stringify(data));
+    }
+
+    function clearData() {
+      if (confirm('Clear all local data?')) {
+        localStorage.removeItem('qazaData');
+        document.getElementById('result').innerHTML = '';
+      }
+    }
+  </script>
+
+
+</body></html>
+
+
+// // Import the functions you need from the SDKs you need
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+// // TODO: Add SDKs for Firebase products that you want to use
+// // https://firebase.google.com/docs/web/setup#available-libraries
+
+// // Your web app's Firebase configuration
+// // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// const firebaseConfig = {
+//   apiKey: "AIzaSyD69QrkP9D0g9ED4EbZH-4x5L9f284ENNc",
+//   authDomain: "qaza-tracker-8a998.firebaseapp.com",
+//   projectId: "qaza-tracker-8a998",
+//   storageBucket: "qaza-tracker-8a998.firebasestorage.app",
+//   messagingSenderId: "819812171630",
+//   appId: "1:819812171630:web:d3fafd03e255f405db0b7f",
+//   measurementId: "G-89HV14MBTM"
+// };
+
+// // Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
